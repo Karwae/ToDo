@@ -1,0 +1,23 @@
+.header{
+    background-color: #54399b;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+    padding: 10px 0;
+    
+}
+
+.header-title{
+    min-height: 100px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+
+    font-size: 30px;
+}
+
+.add-todo{
+    margin-top: 15px;
+}

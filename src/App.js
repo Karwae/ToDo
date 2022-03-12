@@ -1,83 +1,123 @@
-import React, {useSate} from 'react';
-import './App.css';
-
-
-function Todo({ todo, index, completeTodo, removeTodo }) {
-  return (
-    <div
-      className="todo"
-      style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}>
-      {todo.text}
-      <div>
-        <button onClick={() => completeTodo(index)} className='button_complete'>&#10003;</button>
-        <button onClick={() => removeTodo(index)} className='button_delete'>&#10006;</button>
-      </div>
-    </div>
-  );
-}
-
-function TodoForm({ addTodo }) {
-  const [value, setValue] = React.useState("");
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!value) return;
-    addTodo(value);
-    setValue("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        className="input"
-        value={value}
-        placeholder="Input task..."
-        onChange={e => setValue(e.target.value)}
-      />
-    </form>
-  );
-}
+import React, { useState, useEffect } from "react";
+import Todo from "./Components/Todo/Todo";
+import Header from "./Components/Header/Header";
+import DialogTodo from "./Components/DialogTodo/DialogTodo";
+import DisplayTodo from "./Components/DisplaTodo/DisplayTodo";
+import TabsTodo from "./Components/TabsTodo/TabsTodo";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
+import "./App.css";
 
 function App() {
+  let time = moment().format("dddd DD");
 
-  const [todos, setTodos] = React.useState([
-    { text: "Build really cool todo app", isCompleted: false },
-    { text: "Learn about React", isCompleted: false },
-    { text: "Meet with friends", isCompleted: false }
-  ]);
+  const [tab, setTab] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDisplayTodo, setIsOpenDisplayTodo] = useState(false);
+  const [formTodo, setformTodo] = useState([]);
+  const [filtered, setFiltered] = useState(todos);
 
-  const addTodo = text => {
-    const newTodos = [...todos, { text }];
-    setTodos(newTodos);
+  useEffect(() => {
+    const raw = localStorage.getItem("todos") || [];
+    setTodos(JSON.parse(raw));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  useEffect(() => {
+    setFiltered(todos);
+  }, [todos]);
+
+  const handleChangeTab = (tabValue) => {
+    setTab(tabValue);
   };
 
-  const completeTodo = index => {
-    const newTodos = [...todos];
-    newTodos[index].isCompleted = true;
-    setTodos(newTodos);
+  function todoFilter(complete) {
+    if (complete === "all") {
+      setFiltered(todos);
+    } else {
+      let newTodo = [...todos].filter((item) => item.complete === complete);
+      setFiltered(newTodo);
+    }
+  }
+
+  const addform = (item) => {
+    setformTodo(item);
   };
 
-  const removeTodo = index => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+  const addTask = (userInput, userValue) => {
+    const newItem = {
+      id: uuidv4(),
+      title: userInput,
+      task: userValue,
+      complete: false,
+      isEdit: false,
+    };
+    setTodos([...todos, newItem]);
+  };
+
+  const handleOpenDialog = () => setIsOpen((prevState) => !prevState);
+
+  const handleOpenTodo = () => {
+    setIsOpenDisplayTodo((prevState) => !prevState);
+  };
+
+  const removeTask = (id) => {
+    setTodos([...todos.filter((todo) => todo.id !== id)]);
+  };
+
+  const handleToggle = (id) => {
+    setTodos([
+      ...todos.map((todo) =>
+        todo.id === id ? { ...todo, complete: !todo.complete } : { ...todo }
+      ),
+    ]);
   };
 
   return (
-    <div className="app">
-      <div className="todo-list">
-        <h2 className="todo-title">What's the plan for today?</h2>
-        {todos.map((todo, index) => (
-          <Todo
-            key={index}
-            index={index}
-            todo={todo}
-            completeTodo={completeTodo}
-            removeTodo={removeTodo}
+    <div className="app-wrapper">
+      <div className="wrapper">
+        <header>
+          <Header handleOpenDialog={handleOpenDialog} />
+          <DialogTodo
+            isOpen={isOpen}
+            addTask={addTask}
+            handleOpenDialog={handleOpenDialog}
           />
-        ))}
-        <TodoForm addTodo={addTodo} />
+        </header>
+        <section>
+          <aside className="panel">
+            <TabsTodo
+              handleChangeTab={handleChangeTab}
+              tab={tab}
+              todoFilter={todoFilter}
+            />
+          </aside>
+          <article>
+            {filtered.map((todo) => (
+              <Todo
+                key={todo.id}
+                todo={todo}
+                handleOpenTodo={handleOpenTodo}
+                removeTask={removeTask}
+                handleToggle={handleToggle}
+                addform={addform}
+              />
+            ))}
+
+            <DisplayTodo
+              isOpen={isOpenDisplayTodo}
+              handleOpenTodo={handleOpenTodo}
+              formTodo={formTodo}
+            />
+          </article>
+        </section>
+        <footer>
+          <div>{time}</div>
+        </footer>
       </div>
     </div>
   );

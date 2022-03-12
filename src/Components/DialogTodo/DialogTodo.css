@@ -1,0 +1,13 @@
+form {
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+    justify-content: space-between;
+ }
+ 
+ 
+ .MuiDialog-paperWidthSm {
+    width: 450px;
+    min-height: 350px;
+ }
+ 

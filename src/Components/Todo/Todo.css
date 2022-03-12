@@ -1,0 +1,28 @@
+.todo-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 18px;
+}
+
+.todo-item{
+    display: flex;  
+    align-items: center; 
+}
+
+.todo-true{
+    text-decoration: line-through;
+    font-style: italic;
+    font-weight: 100;
+}
+
+.todo-icon{
+    display: flex;
+    flex-direction: row;
+    margin-right: 12px; 
+}
+
+.todo-icon > div{
+    padding-left: 10px; 
+}

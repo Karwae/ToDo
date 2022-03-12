@@ -1,50 +1,54 @@
-.app {
-  background: #11141f;
-  height: 100vh;
-  padding: 30px;
+::-webkit-scrollbar {
+    width: 4px;
 }
 
-.todo-title{
-  font-size: 28px;
-  text-align: center;
+::-webkit-scrollbar-thumb {
+    background: #1579d3;
+    border-radius: 5px;
 }
 
-.todo-list {
-  margin: 10% auto ;
-  background: #54399b;
-  border-radius: 6px;
-  max-width: 550px;
-  padding: 10px 25px 25px 25px;
+.app-wrapper{
+    max-width: 500px;
+    background-color: #fff;
+    height: 500px;
+    box-shadow: 0 0 10px #54399b;
+    border-radius: 6px;
+    margin: 60px auto;
 }
 
-.todo {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  font-size: 18px;
-  background: #fff;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  padding: 10px 10px;
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+header{
+    height: 30%;
+    width: 100%;
+    flex: 0 0 auto;
 }
 
-.button_complete, .button_delete{
-  font-size: 14px;
-  height: 25px;
-  width: 25px;
-  margin-left: 5px;
-  border-radius: 5px;
-  border: 2px solid #fff;
-  background: #54399b;
-  color: #fff;
+section{
+    display: flex;
+    justify-content: space-between;
+    flex: 1 0 auto;
+    max-height: 310px;
+
+}
+article{
+    width: 100%;
+    margin: 0 7px 0 20px;
+    overflow-y: auto;
 }
 
-input[type=text] {
-  width: 100%;
-  padding: 10px 10px;
-  margin: 30px 0;
-  font-size: 18px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  border: 2px solid #54399b;
+footer{
+    color:white;
+    background-color: #54399b;
+    border-radius:0 0 5px 5px;
+    text-align: center;
+    font-size: 22px;
+    padding: 7px;
+    margin-top: 7px;
+    flex: 0 0 auto;
+
 }
+
